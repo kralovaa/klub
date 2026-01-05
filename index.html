@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Klub pokročilé akademické reflexe</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container">
+    <input type="checkbox" id="show-secret" class="visually-hidden">
+    <label for="show-secret" id="club-title" class="clickable-heading" role="button" aria-pressed="false" tabindex="0">Klub pokročilé akademické reflexe</label>
+
+    <section class="info-card">
+      <p>
+        Klub se zaměřuje na pokročilé teoretické koncepty lineární algebry, zejména studium kvadratických forem,
+        jejich diagonalizace a vlastností v ortogonálních vektorových prostorech. Členství vyžaduje schopnost abstraktního myšlení,
+        diskrétnost a ochotu pracovat s pojmy, které se běžně neobjevují v běžné konverzaci.
+      </p>
+
+      <p class="secret">Ve skutečnosti se scházíme večer, pijeme kávu a předstíráme, že rozumíme maticím.</p>
+
+      <nav class="page-links">
+        <a href="index2.html" class="btn">Přihlásit se do klubu (formulář)</a>
+      </nav>
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var label = document.getElementById('club-title');
+      var checkbox = document.getElementById('show-secret');
+      if (!label || !checkbox) return;
+
+      label.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          checkbox.checked = !checkbox.checked;
+          label.setAttribute('aria-pressed', checkbox.checked ? 'true' : 'false');
+        }
+      });
+
+      label.addEventListener('click', function () {
+        label.setAttribute('aria-pressed', checkbox.checked ? 'true' : 'false');
+      });
+    });
+  </script>
+</body>
+</html>

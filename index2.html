@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Přihláška — Klub pokročilé akademické reflexe</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>Přihláška do klubu</h1>
+    </header>
+
+    <form id="application-form" class="application-form"
+          method="POST"
+          action="https://formsubmit.co/skralova@spskt.cz"
+          enctype="multipart/form-data">
+
+      <input type="hidden" name="_subject" value="Nová přihláška do Klubu pokročilé akademické reflexe">
+      <input type="hidden" name="_next" value="https://your-site.example/thank-you.html"> 
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+
+      <fieldset>
+        <legend>Osobní údaje</legend>
+
+        <label for="nick">Přezdívka (povinné)</label>
+        <input type="text" id="nick" name="nick" required minlength="2" maxlength="60">
+
+        <label for="semestry">Počet ukončených semestrů (celé číslo)</label>
+        <input type="number" id="semestry" name="semestry" required min="0" step="1" value="0">
+
+        <label for="dvere">Číslo oblíbených dveří (2 velká písmena A–Z a tři číslice 1–9, např. UN533)</label>
+        <input type="text" id="dvere" name="dvere" pattern="^[A-Z]{2}[1-9]{3}$" title="Dvě velká písmena A–Z následovaná třemi číslicemi 1–9, např. UN533" required>
+        
+        <label for="matice">Oblíbený typ matice</label>
+        <select id="matice" name="matice" required>
+          <option value="">-- vyberte --</option>
+          <option value="symetricka">Symetrická</option>
+          <option value="diagonalni">Diagonální</option>
+          <option value="nahodna">Náhodná</option>
+        </select>
+
+        <label for="vztah">Vztah ke kvadratickým formám (posuvník 0–100)</label>
+        <input type="range" id="vztah" name="vztah" min="0" max="100" value="50">
+        <div class="range-value">Hodnota: <span id="vztah-val">50</span></div>
+
+        <label for="dokazu">Dokážu rozlišit (vyberte více: podržte Ctrl / Cmd)</label>
+        <select id="dokazu" name="dokazu[]" multiple size="4">
+          <option value="pozitivne">Pozitivně definitní</option>
+          <option value="semidef">Semidefinitní</option>
+          <option value="indef">Indefinitní</option>
+          <option value="zalezi">Záleží na matici</option>
+        </select>
+
+        <label for="obrazek">Obrázek mého testu z Lineární algebry (jpg/png)</label>
+        <input type="file" id="obrazek" name="obrazek" accept="image/*">
+
+        <label for="email">Email (povinné)</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="email2">Email pro kontrolu (povinné)</label>
+        <input type="email" id="email2" name="email2" required>
+
+        <div id="email-warning" class="warning hidden" role="alert">E-maily se neshodují.</div>
+
+      </fieldset>
+
+      <div class="form-actions">
+        <button type="submit" id="submit-btn">Odeslat přihlášku</button>
+        <button type="reset">Reset</button>
+      </div>
+
+      <p class="note">Po prvním odeslání obdržíte ověřovací e‑mail od FormSubmit – ověřte svou adresu, aby vám formulář posílal další zprávy.</p>
+    </form>
+
+    <nav class="page-links">
+      <a href="index.html" class="btn">Zpět na informace o klubu</a>
+    </nav>
+  </main>
+
+  <script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var vztah = document.getElementById('vztah');
+      var vztahVal = document.getElementById('vztah-val');
+      var email = document.getElementById('email');
+      var email2 = document.getElementById('email2');
+      var emailWarn = document.getElementById('email-warning');
+      var obrazek = document.getElementById('obrazek');
+      var imgPreview = document.getElementById('img-preview');
+
+      if (vztah && vztahVal) {
+        vztahVal.textContent = vztah.value;
+        vztah.addEventListener('input', function(){ vztahVal.textContent = vztah.value; });
+      }
+
+      if (obrazek && imgPreview) {
+        obrazek.addEventListener('change', function () {
+          imgPreview && (imgPreview.innerHTML = '');
+          var file = obrazek.files && obrazek.files[0];
+          if (file && file.type.startsWith('image/')) {
+            var img = document.createElement('img');
+            img.alt = 'Náhled';
+            img.src = URL.createObjectURL(file);
+            img.style.maxWidth = '150px';
+            img.style.maxHeight = '150px';
+            imgPreview && imgPreview.appendChild(img);
+          }
+        });
+      }
+
+      function checkEmails() {
+        if (!email || !email2 || !emailWarn) return true;
+        if (email.value && email2.value && email.value !== email2.value) {
+          emailWarn.classList.remove('hidden');
+          return false;
+        } else {
+          emailWarn.classList.add('hidden');
+          return true;
+        }
+      }
+      email && email.addEventListener('input', checkEmails);
+      email2 && email2.addEventListener('input', checkEmails);
+
+      if (!document.getElementById('img-preview')) {
+        var div = document.createElement('div');
+        div.id = 'img-preview';
+        div.className = 'img-preview';
+        obrazek && obrazek.parentNode.insertBefore(div, obrazek.nextSibling);
+      }
+    });
+  </script>
+</body>
+</html>
